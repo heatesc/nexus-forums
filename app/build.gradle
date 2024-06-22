@@ -21,6 +21,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql' // Add the PostgreSQL driver
 
+    runtimeOnly 'org.postgresql:postgresql'
+
     // Spring Boot test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -30,6 +32,27 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+bootRun {
+    doFirst {
+        environment 'DB_URL', System.getenv('DB_URL')
+        environment 'DB_USERNAME', System.getenv('DB_USERNAME')
+        environment 'DB_PASSWORD', System.getenv('DB_PASSWORD')
+        environment 'DDL_AUTO', System.getenv('DDL_AUTO')
+    }
+}
+
+//test {
+//    doFirst {
+//        environment 'DB_URL', System.getenv('DB_URL')
+//        environment 'DB_USERNAME', System.getenv('DB_USERNAME')
+//        environment 'DB_PASSWORD', System.getenv('DB_PASSWORD')
+//        environment 'DDL_AUTO', System.getenv('DDL_AUTO')
+//        System.out.print("db url: ")
+//        System.out.println(System.getenv('DB_URL'))
+//    }
+//    useJUnitPlatform()
+//}
 
 application {
     mainClass = 'nexus.forums.App'

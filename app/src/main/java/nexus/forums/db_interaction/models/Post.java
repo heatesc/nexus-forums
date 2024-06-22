@@ -4,45 +4,34 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "posts", schema = "main_schema")
+@Table(name = "posts")
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "postId")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "forumId", nullable = false)
-    private Forum forum;
-
-    @Column(name = "title", nullable = false)
     private String title;
-
-    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "createdAt", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "createdBy", nullable = true)
+    @JoinColumn(name = "forum_id", nullable = false)
+    private Forum forum;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
-    // Getters and Setters
+    // Getters and setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Forum getForum() {
-        return forum;
-    }
-
-    public void setForum(Forum forum) {
-        this.forum = forum;
     }
 
     public String getTitle() {
@@ -67,6 +56,14 @@ public class Post {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Forum getForum() {
+        return forum;
+    }
+
+    public void setForum(Forum forum) {
+        this.forum = forum;
     }
 
     public User getCreatedBy() {
