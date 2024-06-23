@@ -51,9 +51,7 @@ public class AuthenticationRepositoryTest {
     @Test
     public void testFindById() {
         entityManager.clear();
-        System.out.print("TEST  testfindbyid: ");
-        System.out.println(authentication.getUserId());
-        Optional<Authentication> foundAuth = authenticationRepository.findById(authentication.getUserId());
+        Optional<Authentication> foundAuth = authenticationRepository.findById(authentication.getAuthId());
         assertTrue(foundAuth.isPresent());
         assertEquals(authentication.getPasswordHash(), foundAuth.get().getPasswordHash());
     }
@@ -70,14 +68,15 @@ public class AuthenticationRepositoryTest {
         newAuth.setUser(newUser);
         newAuth.setPasswordHash("new_hashed_password");
         Authentication savedAuth = authenticationRepository.save(newAuth);
-        assertNotNull(savedAuth.getUserId());
+        assertNotNull(savedAuth.getAuthId());
     }
 
     @Test
     public void testDeleteById() {
         entityManager.clear();
-        authenticationRepository.deleteById(authentication.getUserId());
-        Optional<Authentication> deletedAuth = authenticationRepository.findById(authentication.getUserId());
+        authenticationRepository.deleteById(authentication.getAuthId());
+        Optional<Authentication> deletedAuth = authenticationRepository.findById(authentication.getAuthId());
         assertFalse(deletedAuth.isPresent());
     }
 }
+

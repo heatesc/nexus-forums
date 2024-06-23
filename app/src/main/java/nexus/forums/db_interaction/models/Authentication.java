@@ -3,27 +3,28 @@ package nexus.forums.db_interaction.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "authentication", schema = "main_schema")
+@Table(name = "authentication")
 public class Authentication {
-    @Id
-    @Column(name = "userId")
-    private Long userId;
 
-    @Column(name = "passwordHash", nullable = false, length = 60)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "auth_id")
+    private Long authId;
+
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "userId")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Getters and Setters
-    public Long getUserId() {
-        return userId;
+    // Getters and setters
+    public Long getAuthId() {
+        return authId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setAuthId(Long authId) {
+        this.authId = authId;
     }
 
     public String getPasswordHash() {

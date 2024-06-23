@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -23,6 +25,9 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private User user;
 
     @Before
@@ -35,6 +40,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindById() {
+        entityManager.clear();
         Optional<User> foundUser = userRepository.findById(user.getId());
         assertTrue(foundUser.isPresent());
         assertEquals(user.getUsername(), foundUser.get().getUsername());
@@ -42,6 +48,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testSave() {
+        entityManager.clear();
         User newUser = new User();
         newUser.setUsername("newuser");
         newUser.setCreatedAt(java.time.LocalDateTime.now());
@@ -51,6 +58,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testDeleteById() {
+        entityManager.clear();
         userRepository.deleteById(user.getId());
         Optional<User> deletedUser = userRepository.findById(user.getId());
         assertFalse(deletedUser.isPresent());

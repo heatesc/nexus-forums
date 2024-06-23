@@ -1,6 +1,6 @@
 package nexus.forums.db_interaction.repositories;
 
-import nexus.forums.db_interaction.models.Forum;
+import nexus.forums.db_interaction.models.Email;
 import nexus.forums.db_interaction.models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +21,10 @@ import static org.junit.Assert.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-public class ForumRepositoryTest {
+public class EmailRepositoryTest {
 
     @Autowired
-    private ForumRepository forumRepository;
+    private EmailRepository emailRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -33,48 +33,49 @@ public class ForumRepositoryTest {
     private EntityManager entityManager;
 
     private User user;
-    private Forum forum;
+    private Email email;
 
     @Before
     public void setUp() {
         user = new User();
-        user.setUsername("forumadmin");
+        user.setUsername("emailuser");
         user.setCreatedAt(java.time.LocalDateTime.now());
         userRepository.save(user);
 
-        forum = new Forum();
-        forum.setTitle("Test Forum");
-        forum.setDescription("Description of the test forum");
-        forum.setCreatedAt(java.time.LocalDateTime.now());
-        forum.setAdmin(user);
-        forumRepository.save(forum);
+        email = new Email();
+        email.setUser(user);
+        email.setEmail("email@example.com");
+        emailRepository.save(email);
     }
 
     @Test
     public void testFindById() {
         entityManager.clear();
-        Optional<Forum> foundForum = forumRepository.findById(forum.getId());
-        assertTrue(foundForum.isPresent());
-        assertEquals(forum.getTitle(), foundForum.get().getTitle());
+        Optional<Email> foundEmail = emailRepository.findById(email.getEmailId());
+        assertTrue(foundEmail.isPresent());
+        assertEquals(email.getEmail(), foundEmail.get().getEmail());
     }
 
     @Test
     public void testSave() {
         entityManager.clear();
-        Forum newForum = new Forum();
-        newForum.setTitle("New Forum");
-        newForum.setDescription("Description of the new forum");
-        newForum.setCreatedAt(java.time.LocalDateTime.now());
-        newForum.setAdmin(user);
-        Forum savedForum = forumRepository.save(newForum);
-        assertNotNull(savedForum.getId());
+        User newUser = new User();
+        newUser.setUsername("newemailuser");
+        newUser.setCreatedAt(java.time.LocalDateTime.now());
+        userRepository.save(newUser);
+
+        Email newEmail = new Email();
+        newEmail.setUser(newUser);
+        newEmail.setEmail("newemail@example.com");
+        Email savedEmail = emailRepository.save(newEmail);
+        assertNotNull(savedEmail.getEmailId());
     }
 
     @Test
     public void testDeleteById() {
         entityManager.clear();
-        forumRepository.deleteById(forum.getId());
-        Optional<Forum> deletedForum = forumRepository.findById(forum.getId());
-        assertFalse(deletedForum.isPresent());
+        emailRepository.deleteById(email.getEmailId());
+        Optional<Email> deletedEmail = emailRepository.findById(email.getEmailId());
+        assertFalse(deletedEmail.isPresent());
     }
 }

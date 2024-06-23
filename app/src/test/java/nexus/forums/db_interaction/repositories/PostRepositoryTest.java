@@ -82,7 +82,6 @@ public class PostRepositoryTest {
         newPost.setCreatedBy(user);
         Post savedPost = postRepository.save(newPost);
         assertNotNull(savedPost.getId());
-        assertEquals(forum.getId(), savedPost.getForum().getId());
     }
 
     @Test

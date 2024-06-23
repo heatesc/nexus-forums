@@ -1,15 +1,15 @@
 package nexus.forums.db_interaction.models;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "forums", schema = "main_schema")
+@Table(name = "forums")
 public class Forum {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "forumId")
+    @Column(name = "forum_id")
     private Long id;
 
     @Column(name = "title", nullable = false)
@@ -18,14 +18,14 @@ public class Forum {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "createdAt", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "adminId", nullable = true)
+    @JoinColumn(name = "admin_id")
     private User admin;
 
-    // Getters and Setters
+    // Getters and setters
     public Long getId() {
         return id;
     }
