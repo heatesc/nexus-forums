@@ -11,7 +11,7 @@ create table if not exists users (
 create table if not exists authentication (
     auth_id serial primary key,
     user_id int not null,
-    password_hash char(60) not null, -- Assuming 60 characters for a bcrypt hash
+    password_hash varchar(60) not null, -- Assuming 60 characters for a bcrypt hash
     foreign key (user_id) references users(user_id) on delete cascade
 );
 
